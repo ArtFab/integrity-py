@@ -2,18 +2,15 @@
 class Integrity:
     @staticmethod
     def check(condition, *msg):
-        '''If condition is not true, then raises an exception, with optional message
+        '''If condition is not true, then raises an exception, with default or optional message
 
         Args:
             condition (bool): The condition which must be true
-            msg (any): See docstring for deferredStringBuilder
+            msg (any): Optional. See docstring for deferredStringBuilder
 
         Raises:
-            TypeError: if condition is not a bool (or is None)
+            TypeError: if condition is not a bool (including if it is None)
             ValueError: if condition is false
-
-        Returns:
-            cars: A car mileage
         '''
         if(condition is None):
             raise TypeError("Expected bool but was None");
@@ -27,6 +24,15 @@ class Integrity:
 
     @staticmethod
     def checkNotNone(test, *msg):
+        '''If test is exactly None then raises an exception with default or optional message
+
+        Args:
+            condition (bool): The condition which must be true
+            msg (any): Optional. See docstring for deferredStringBuilder
+
+        Raises:
+            ValueError: if and only if test is exctly None
+        '''
         if(test is None):
             text = Integrity.__getMessage("None encountered", msg)
             raise ValueError(text)
