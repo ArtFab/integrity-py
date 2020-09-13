@@ -15,7 +15,7 @@ class Integrity:
         if(condition is None):
             raise TypeError("Expected bool but was None");
 
-        if(not isinstance(test, bool)):
+        if(not isinstance(condition, bool)):
             raise TypeError("Expected bool but was " + str(type(test)));
 
         if(not condition):
