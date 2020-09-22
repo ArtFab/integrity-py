@@ -1,0 +1,1 @@
+# this is needed so that visual studio will pick up the tests in the test explore stage

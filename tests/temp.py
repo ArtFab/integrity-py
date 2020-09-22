@@ -1,4 +1,4 @@
-from integrity import Integrity
+from integrity_check import Integrity
 import traceback
 
 def fail(x):

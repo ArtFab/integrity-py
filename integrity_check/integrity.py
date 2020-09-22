@@ -17,7 +17,7 @@ class Integrity:
             raise TypeError("Expected bool but was None");
 
         if(not isinstance(condition, bool)):
-            raise TypeError("Expected bool but was " + str(type(test)));
+            raise TypeError("Expected bool but was " + str(type(condition)));
 
         if(not condition):
             text = Integrity.__getMessage("Integrity check failed", msg)

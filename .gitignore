@@ -350,3 +350,4 @@ MigrationBackup/
 .ionide/
 /integrity-py.pyproj
 /integrity-py.sln
+/.pytest_cache/v/cache
