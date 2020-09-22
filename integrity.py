@@ -1,3 +1,4 @@
+import inspect;
 
 class Integrity:
     @staticmethod
@@ -6,7 +7,7 @@ class Integrity:
 
         Args:
             condition (bool): The condition which must be true
-            msg (any): Optional. See docstring for deferredStringBuilder
+            msg (any): Optional. See docstring for Integrity.deferredStringBuilder
 
         Raises:
             TypeError: if condition is not a bool (including if it is None)
@@ -27,8 +28,8 @@ class Integrity:
         '''If test is exactly None then raises an exception with default or optional message
 
         Args:
-            condition (bool): The condition which must be true
-            msg (any): Optional. See docstring for deferredStringBuilder
+            test (bool): The condition which must be true
+            msg (any): Optional. See docstring for Integrity.deferredStringBuilder
 
         Raises:
             ValueError: if and only if test is exctly None
@@ -39,32 +40,74 @@ class Integrity:
 
     @staticmethod
     def checkIsBool(test, *msg):
+        '''If test is not exactly of type bool then raises an exception with default or optional message
+
+        Args:
+            test (bool): The item which must be of type bool (note None would not be of type bool)
+            msg (any): Optional. See docstring for Integrity.deferredStringBuilder
+
+        Raises:
+            TypeError: if test is not exactly of type bool
+        '''
         if(not isinstance(test, bool)):
             text = Integrity.__getMessage(Integrity.__getTypeErrorDefaultString("bool", test), msg)
             raise TypeError(text)
 
     @staticmethod
     def checkIsBoolOrNone(test, *msg):
+        '''If test is not exactly of type bool and not exactly None then raises an exception with default or optional message
+
+        Args:
+            test (bool): The item which must be of type bool or is set to None
+            msg (any): Optional. See docstring for Integrity.deferredStringBuilder
+
+        Raises:
+            TypeError: if test is not exactly of type bool or set to None
+        '''
         if(test is not None):
-            if(not isinstance(test, bool)):
-                text = Integrity.__getMessage(Integrity.__getTypeErrorDefaultString("bool", test), msg)
-                raise TypeError(text)
+            Integrity.checkIsBool(test, *msg)
 
     @staticmethod
     def checkIsString(test, *msg):
+        '''Check that first parameter is not None and is of type stringe
+
+        Args:
+            test (str): The item which must be of type string 
+            msg (any): Optional. See docstring for Integrity.deferredStringBuilder
+
+        Raises:
+            TypeError: if test is not exactly of type string
+        '''
         if(not isinstance(test, str)):
             text = Integrity.__getMessage(Integrity.__getTypeErrorDefaultString("string", test), msg)
             raise TypeError(text)
 
     @staticmethod
     def checkIsStringOrNone(test, *msg):
+        '''Check that first parameter is either None or of type string
+
+        Args:
+            test (str): The item which must be of type string or set to None 
+            msg (any): Optional. See docstring for Integrity.deferredStringBuilder
+
+        Raises:
+            TypeError: if test is not None and not exactly of type string
+        '''
         if(test is not None):
-            if(not isinstance(test, str)):
-                text = Integrity.__getMessage(Integrity.__getTypeErrorDefaultString("string", test), msg)
-                raise TypeError(text)
+            Integrity.checkIsString(test, *msg)
 
     @staticmethod
     def checkStringNotNoneOrEmpty(test, *msg):
+        '''Check that first parameter is a string and is not None and not empty
+
+        Args:
+            test (str): The item which must be of type string and not None and not of length 0 (so a single space would pass) 
+            msg (any): Optional. See docstring for Integrity.deferredStringBuilder
+
+        Raises:
+            TypeError: if test is not exactly of type string or set to None
+            VaueError: if test is a string with length 0
+        '''
         if(not isinstance(test, str)):
             text = Integrity.__getMessage(Integrity.__getTypeErrorDefaultString("string", test), msg)
             raise TypeError(text)
@@ -74,6 +117,16 @@ class Integrity:
 
     @staticmethod
     def checkIsValidNumber(test, *msg):
+        '''Check that first parameter is a number (type float or int) and is not None, NaN or +-Infinity. Note bool is derived from int and will pass
+
+        Args:
+            test (int or float): The item which must be of type int or float and not None and not NaN and not infinity 
+            msg (any): Optional. See docstring for Integrity.deferredStringBuilder
+
+        Raises:
+            TypeError: if test is not exactly of type string or set to None
+            VaueError: if test is a string with length 0
+        '''
         if(isinstance(test, int)):
            return; # check for bool?
 
@@ -96,7 +149,23 @@ class Integrity:
             text = Integrity.__getMessage("-Infinity", msg)
             raise ValueError(text)
 
+    @staticmethod
+    def checkIsValidNumberOrNone(test, *msg):
+        if(test is not None):
+            Integrity.checkIsValidNumber(test, *msg)
 
+    @staticmethod
+    def checkIsFunction(test, *msg):
+        if(not inspect.isroutine(test)):
+            text = Integrity.__getMessage("Not a callable function, was " + str(test), msg)
+            raise TypeError(text)
+
+    @staticmethod
+    def checkIsFunctionOrNone(test, *msg):
+        if(not test is None):
+            if(not callable(test)):
+                text = Integrity.__getMessage("Not a callable function, was " + str(test), msg)
+                raise TypeError(text)
 
     @staticmethod
     def __getTypeErrorDefaultString(expectedTypeString, item):
@@ -109,8 +178,20 @@ class Integrity:
         return "Expected " + expectedTypeString + " but was " + prettyType + ", value was '" + prettyValue + "'"
 
     @staticmethod
-    def deferredStringBuilder(defaultMessage, *messageParts):
-        return Integrity.__getMessage(defaultMessage, messageParts)
+    def deferredStringBuilder(*messageParts):
+        '''Builds from an abritary mix of items, using {} substitution or adding after a comma
+
+        Args:
+            messageParts (any): variable arguments which get concatenated as strings (comma separated) or substituted into first {}
+
+        Examples:
+            "abc" -> "abc"
+            "abc {} def", 1 -> "abc 1 def"
+            1, "one", True -> "1, one, True"
+            123, "and now {} ", 345 -> "123, and now 345"
+            "{} {} {}", 1, 2, 3, 4 -> "1 2 3, 4"
+        '''
+        return Integrity.__getMessage('', messageParts)
 
     @staticmethod
     def __getMessage(default, msg):
