@@ -1,13 +1,11 @@
 import setuptools
-#params
-#sdist bdist_wheel
 
 with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setuptools.setup(
-    name="integrity_check", 
-    version="1.3.1",
+    name="integrity-check", 
+    version="1.3.2",
     author="ArtFab",
     author_email="auz.tin@outlook.com",
     description="A replacement for assert",
