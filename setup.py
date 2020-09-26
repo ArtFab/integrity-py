@@ -1,18 +1,20 @@
 import setuptools
+#params
+#sdist bdist_wheel
 
 with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setuptools.setup(
     name="integrity_check", 
-    version="0.0.1",
+    version="1.3.0",
     author="ArtFab",
-    author_email="",
+    author_email="auz.tin@outlook.com",
     description="A replacement for assert",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/ArtFab/integrity-py",
-    packages=setuptools.find_packages(),
+    packages=["integrity_check"],
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",

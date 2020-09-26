@@ -351,3 +351,6 @@ MigrationBackup/
 /integrity-py.pyproj
 /integrity-py.sln
 /.pytest_cache/v/cache
+/build/lib/integrity_check
+/dist
+/integrity_check.egg-info

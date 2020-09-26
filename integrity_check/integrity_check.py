@@ -1,6 +1,9 @@
 import inspect;
 
 class Integrity:
+    positive_infinity = float('inf') 
+    negative_infinity = float('-inf') 
+
     @staticmethod
     def check(condition, *msg):
         '''If condition is not true, then raises an exception, with default or optional message
@@ -14,10 +17,10 @@ class Integrity:
             ValueError: if condition is false
         '''
         if(condition is None):
-            raise TypeError("Expected bool but was None");
+            raise TypeError(Integrity.__getTypeErrorDefaultString("bool", condition));
 
         if(not isinstance(condition, bool)):
-            raise TypeError("Expected bool but was " + str(type(condition)));
+            raise TypeError(Integrity.__getTypeErrorDefaultString("bool", condition));
 
         if(not condition):
             text = Integrity.__getMessage("Integrity check failed", msg)
@@ -127,25 +130,23 @@ class Integrity:
             TypeError: if test is not exactly of type string or set to None
             VaueError: if test is a string with length 0
         '''
-        if(isinstance(test, int)):
-           return; # check for bool?
 
         if(not isinstance(test, int) and not isinstance(test, float)):
-            text = Integrity.__getMessage(Integrity.__getTypeErrorDefaultString("string", test), msg)
+            text = Integrity.__getMessage(Integrity.__getTypeErrorDefaultString("float or int", test), msg)
             raise TypeError(text)
-        if(test != test):
-            text = Integrity.__getMessage("NaN", msg)
-            raise ValueError(text)
+
+        if(isinstance(test, bool)):
+            text = Integrity.__getMessage(Integrity.__getTypeErrorDefaultString("float or int", test), msg)
+            raise TypeError(text)
 
         if(test != test):
             text = Integrity.__getMessage("NaN", msg)
             raise ValueError(text)
-        positive_infnity = float('inf') 
-        negative_infnity = float('-inf') 
-        if(test == positive_infnity):
+
+        if(test == Integrity.positive_infinity):
             text = Integrity.__getMessage("Infinity", msg)
             raise ValueError(text)
-        if(test == negative_infnity):
+        if(test == Integrity.negative_infinity):
             text = Integrity.__getMessage("-Infinity", msg)
             raise ValueError(text)
 
@@ -157,20 +158,21 @@ class Integrity:
     @staticmethod
     def checkIsFunction(test, *msg):
         if(not inspect.isroutine(test)):
-            text = Integrity.__getMessage("Not a callable function, was " + str(test), msg)
+            text = Integrity.__getMessage(Integrity.__getTypeErrorDefaultString("function", test), msg)
             raise TypeError(text)
 
     @staticmethod
     def checkIsFunctionOrNone(test, *msg):
         if(not test is None):
-            if(not callable(test)):
-                text = Integrity.__getMessage("Not a callable function, was " + str(test), msg)
-                raise TypeError(text)
+            Integrity.checkIsFunction(test, *msg)
 
     @staticmethod
     def __getTypeErrorDefaultString(expectedTypeString, item):
         prettyValue = str(item)
-        if(hasattr(item, "__class__")):
+        if(item is None):
+            return "Expected " + expectedTypeString + " but was None"
+
+        if (hasattr(item, "__class__")):
             prettyType = item.__class__.__name__
         else:
             prettyType = type(item)
@@ -204,13 +206,19 @@ class Integrity:
 
         s = "";
         for item in msg:
+            asString = str(item)
+
             pos = s.find("{}")
             if(pos != -1):
-                s = s.replace("{}",  str(item), 1)
+                s = s.replace("{}",  asString, 1)
             else:
                 if(s == ""):
-                    s += str(item)
+                    s += asString
                 else:
-                    s += ", " + str(item)
+                    if(isinstance(item, str)):
+                        s += ", '" + item + "'"
+                    else:
+                        s += ", " + asString
 
         return s
+
