@@ -7,7 +7,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="integrity_check", 
-    version="1.3.0",
+    version="1.3.1",
     author="ArtFab",
     author_email="auz.tin@outlook.com",
     description="A replacement for assert",
