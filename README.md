@@ -16,19 +16,19 @@ or
 or even just
 `Integrity.check(a == b)`
 
-The main function is check, but the full list of functions is:
+The main function is `check`, but the full list of functions is:
 ```
-    def check(condition, *msg):
-    def checkNotNone(test, *msg):
-    def checkIsBool(test, *msg):
-    def checkIsBoolOrNone(test, *msg):
-    def checkIsString(test, *msg):
-    def checkIsStringOrNone(test, *msg):
-    def checkStringNotNoneOrEmpty(test, *msg):
-    def checkIsValidNumber(test, *msg):
-    def checkIsValidNumberOrNone(test, *msg):
-    def checkIsFunction(test, *msg):
-    def checkIsFunctionOrNone(test, *msg):
+    check(condition, *msg)
+    checkNotNone(test, *msg)
+    checkIsBool(test, *msg)
+    checkIsBoolOrNone(test, *msg)
+    checkIsString(test, *msg)
+    checkIsStringOrNone(test, *msg)
+    checkStringNotNoneOrEmpty(test, *msg)
+    checkIsValidNumber(test, *msg)
+    checkIsValidNumberOrNone(test, *msg)
+    checkIsFunction(test, *msg)
+    checkIsFunctionOrNone(test, *msg)
 ```
 In all cases the *msg parameters work like this:
 
@@ -41,6 +41,22 @@ In all cases the *msg parameters work like this:
 there can be as many message parameters as you like.
 Note that if a variable is a string and happens to contain {} then it will be used in subsequent substitutions. 
 
+# Example
+
+```
+from integrity_check import Integrity
+
+def myComplicatedFunction(aNumber, callback, aName):
+    Integrity.checkIsValidNumberOrNone(aNumber)
+    Integrity.checkIsFunction(callback)
+    Integrity.checkStringNotNoneOrEmpty(aName)
+
+    handle = callback(aName)
+    Integrity.checkNotNone(handle, "expected valid handle, aName was {}", aName)
+
+    diameter = someOtherFunction(handle)
+    Integrity.check(diameter >= 0, "expected non-negative diameter, was {}", diameter)
+```
 
 # What are the advantages of using Integrity?
 
