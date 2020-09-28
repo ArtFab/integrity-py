@@ -29,6 +29,8 @@ The main function is `check`, but the full list of functions is:
     checkIsValidNumberOrNone(test, *msg)
     checkIsFunction(test, *msg)
     checkIsFunctionOrNone(test, *msg)
+
+    fail(*msg)
 ```
 In all cases the *msg parameters work like this:
 

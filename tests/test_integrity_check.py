@@ -46,6 +46,8 @@ class Test_integrity_check(unittest.TestCase):
         nan = float('nan')
         one = 1
         two = 2
+
+        self.assertRaises(ValueError, Integrity.fail)
         self.assertRaises(TypeError, Integrity.check, 1)
         self.assertRaises(TypeError, Integrity.check, NotImplemented)
         self.assertRaises(TypeError, Integrity.check, None)
@@ -133,6 +135,8 @@ class Test_integrity_check(unittest.TestCase):
         arr = [1, 2, 3]
         dict1 = { 'a': 'b' }
 
+        self.assertEquals("abc", self.get_x_message(Integrity.fail, "abc"))
+        self.assertEquals("abc", self.get_x_message(Integrity.check, False, "abc"))
         self.assertEquals("abc", self.get_x_message(Integrity.check, False, "{}{}{}", 'a', 'b', 'c'))
         self.assertEquals("abc", self.get_x_message(Integrity.checkNotNone, None, "{}{}{}", 'a', 'b', 'c'))
         self.assertEquals("abc", self.get_x_message(Integrity.checkIsBool, 1, "{}{}{}", 'a', 'b', 'c'))
@@ -147,6 +151,8 @@ class Test_integrity_check(unittest.TestCase):
 
         # test default messages...
 
+
+        self.assertEquals("Integrity check failed", self.get_x_message_no_main_arg(Integrity.fail))
         self.assertEquals("Expected bool but was None", self.get_x_message(Integrity.check, None))
         self.assertEquals("Expected bool but was str, value was 'a'", self.get_x_message(Integrity.check, 'a'))
         self.assertEquals("Integrity check failed", self.get_x_message(Integrity.check, False))
@@ -171,7 +177,15 @@ class Test_integrity_check(unittest.TestCase):
              return str(inst)
 
         self.assertTrue(false)
+    
+    def get_x_message_no_main_arg(self, func, *msgargs):
 
+        try:
+            func(*msgargs)
+        except Exception as inst:
+             return str(inst)
+
+        self.assertTrue(false)
 
 if __name__ == '__main__':
     unittest.main()

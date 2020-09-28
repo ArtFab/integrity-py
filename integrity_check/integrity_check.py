@@ -27,6 +27,18 @@ class Integrity:
             raise ValueError(text)
 
     @staticmethod
+    def fail(*msg):
+        '''Raise a ValueError exception with a default message or a message built from the arguments.
+
+        Args:
+            msg (any): Optional. See docstring for Integrity.deferredStringBuilder
+        Raises:
+            ValueError: if condition is false
+        '''
+        text = Integrity.__getMessage("Integrity check failed", msg)
+        raise ValueError(text)
+
+    @staticmethod
     def checkNotNone(test, *msg):
         '''If test is exactly None then raises an exception with default or optional message
 

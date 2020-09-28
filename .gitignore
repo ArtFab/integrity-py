@@ -354,3 +354,4 @@ MigrationBackup/
 /build/lib/integrity_check
 /dist
 /integrity_check.egg-info
+/tests/example.py
