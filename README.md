@@ -17,7 +17,7 @@ or even just
 `Integrity.check(a == b)`
 
 The main function is `check`, but the full list of functions is:
-```
+```python
     check(condition, *msg)
     checkNotNone(test, *msg)
     checkIsBool(test, *msg)
@@ -45,7 +45,7 @@ Note that if a variable is a string and happens to contain {} then it will be us
 
 # Example
 
-```
+```python
 from integrity_check import Integrity
 
 def myComplicatedFunction(aNumber, callback, aName):
