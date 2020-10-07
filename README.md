@@ -62,6 +62,8 @@ def myComplicatedFunction(aNumber, callback, aName):
 
 # What are the advantages of using Integrity?
 
+see here for general info: https://github.com/RisingTyde/integrity-general
+
 ## Consistent api across languages
 If you jump around from one language to another, it is nice to have a consistent way of testing your assumptions regardless of what language you are in. For example:
 
